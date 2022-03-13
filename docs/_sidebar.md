@@ -1,3 +1,2 @@
-- [问题](./problem.md)
-- [提示](./tip.md)
+- [问题](./README.md)
 - [解决方案](./solve.md)
