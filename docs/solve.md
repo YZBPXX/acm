@@ -119,8 +119,10 @@ int main(){
 $$
 count=2^count_A\times \sum\limits_{i=0}C_{count_B}^{2i+1}=2^{count_A+count_B-1}=2^{r-l-1}
 $$
+
 [1562C](https://codeforces.com/contest/1562/problem/C)
 - 要使得两个乘数关系：如果有0 去掉0即可（判断0在左边还是右边），如果没0全1则移动一个单位即可
+
 [牛客挑战赛58B](https://ac.nowcoder.com/acm/contest/11198/B)
 > 对于位运算、首先应该想到按位来求对结果的共享
 - 考虑每个一位对结果的影响（要想$a\leq b$那肯定是某一位大于它，所以枚举每一位的情况，总共m位）
