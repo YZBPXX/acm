@@ -27,4 +27,8 @@ $$
 
 [牛客挑战赛58B](https://ac.nowcoder.com/acm/contest/11198/B)
 ----
-- 题意：给定n，m, 求多少序列$a_1|a_2|a_i|...|a_n \leq b_1\oplus b_2\oplusb_i\oplus ...\oplusb_n, a_i,b_i \in [0,2^m)$ 
+- 题意：给定n，m, 求多少序列$a_1|a_2|a_i|...|a_n \leq b_1 \oplus b_2 \oplus b_i \oplus ... \oplus b_n, a_i,b_i \in [0,2^m)$ 
+[1654C](https://codeforces.com/contest/1654/problem/C)
+----
+- 题意：有n个数，这n个数判断这n个数是否是某个数通过不断处2得到的（如果是奇数则一个数向上取整，一个数向下取整）
+- 例子如4 -> 2, 2 -> 1, 1, 2. 所以2，2和1，1，2 都满足条件,而2，8不可能是某个数除2得到
