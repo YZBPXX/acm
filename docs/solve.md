@@ -1,17 +1,17 @@
-1634
+[1634](https://codeforces.com/contest/1634/problem/C)
 ----
-> 注意考虑方向，排除某些不可能的情况，考虑剩下的情况是否满足要求
+>  从大方向考虑要判断是否能被整除，那么字串的和就必须有通式，故而想到了等差数列和等比数列
 
-分析：平均数为整数则相邻之间奇偶性相同，也就是说奇数和偶数个数不能差1只能相同，也就得到了$n\times k$为偶数，考虑连续奇偶性相同的数是否所有满足条件，任意i-j 之间的和为
+分析：平均数为整数则每行相邻之间奇偶性相同，如果每行个数k>1 那么总数$a\times k$ 必须是偶数, 否则不能满足前面那个条件。考虑连续奇偶性相同的数是否所有满足条件(只有这个方向才能用通式表达，进而用数学公式证明），任意i-j 之间的和为
 $$\frac{(a+(j-i)*2+a)(j-i+1)}{2}\times\frac{1}{j-i+1}=a+j-i$$
 故证明均值都是整数
 
-1352B
+[1352B](https://codeforces.com/contest/1352/problem/B)
 ----
 - 偶数可以由若干个2组成、奇数可以由若干个1组成,所以不管偶数（奇数）如何组成都可以用一个偶数数，n-1写2 表示. 奇数则可以用一个奇数和n-1个1表示(将其他不为1的奇数提取2k加到第一个数 两个还是奇数）. 所以问题变成了n能不能由k-1个1外加一个奇数，或k-1个2外加一个偶数表示.
 - 所以直接n-k+1 如果是奇数则可以，或则n-(k-1)*2 是偶数就可以 否则不行
 
-1646C
+[1646C](https://codeforces.com/contest/1646/problem/C)
 ----
 > **这种题型可以设置成一个参数x范围比较小，另一个参数y范围随意，已知函数f(x,y)，求x,y的组合**
 > 注意到一个点，如果贪心解决不了，可以考虑两种解发，1 遍历所有情况，2 求局部最优解(dp)
@@ -70,68 +70,71 @@ int main(){
     改成usigned long long 加ll 例__builtin_clzll
     */ 
 #include<iostream>
-#include<utility>
-#include<vector>
 #include<cmath>
-#include <algorithm>
 using namespace std;
-long long MAX=1e14+11;
+typedef long long ll;
+static ll facts(ll x){
+    ll sum=1;
+    for(int i=2;i<=x;i++){
+       sum*=i; 
+    }
+    return sum;
+}
 int main(){
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     int t;
     cin>>t;
+    ll  a[1<<15]={ 0 };
+    for(ll  i=1;i<=(1<<15);i++){
+        ll mask=(31-__builtin_clz(i));
+        a[i]=a[i^(1<<mask)]+facts(mask+1);
+    }
     while(t--){
-        long long  n;
+        ll n;
         cin>>n;
-        vector<long long>facts;
-        long long  fact=1,i=1;
-        while(fact<MAX){
-           facts.push_back(fact);
-           i++;
-           fact*=i;
+        int cnt=100;
+        for(int i=0;i<=(1<<15);i++){
+           if(a[i]<=n){
+              cnt=min(__builtin_popcountll(i)+__builtin_popcountll(n-a[i]),cnt);
+           }
+           else {
+               break;
+           }
         }
-        vector<pair<long long, long long>>f(1<<facts.size());// facts 每项代表每位 所有应该有facts 这个大小
-        f.push_back(make_pair(0,0));
-        long long  s=facts.size();
-        long long r=1;
-        for(long long  i=1; i<(r<<s); i++){
-            long long  mask=63-__builtin_clzll(i);
-            f[i].first=f[i-(1<<(mask))].first+facts[mask];
-            f[i].second=__builtin_popcountll(i);
-        }
-        long long res = __builtin_popcountll(n);
-        for(auto i : f){
-            if(i.first<=n){
-                res = min(res, __builtin_popcountll(n-i.first)+i.second);
-            }
-        }
-        cout<<res<<endl;
+        cout<<cnt<<endl;
     }
 }
 ```
-1630A
+[1630A](https://codeforces.com/contest/1630/problem/A)
 ----
 - 考虑入k!=n-1 则 k&n-1=k,~(k)&0=0,其余的x只需要x&~x=0
 - 如果k==n-1 思考如何改变小批量的数，得到k的同时其余数满足x&!x=0
 
-1614C
+[1614C](https://codeforces.com/contest/1614/problem/C)
 -----
-- 分析：求异或，考虑每一位对答案的贡献，例如在某个区间[l,r]中,考虑第i位的影响，将第i位为0的放在一在A集合里，第i位为1的放在B集合里(通过整区间的异或结果判断该位是否至少有一个），如果B不为空,从B里任选奇数个项和A中任意组合构成答案中第i位的所有组合count，而第i位值位$2^{i-1}$, 对结果的共享为$count\times2^{i-1}$, 若果B为空则为0,第i位不产生影响。故$ans=\sum\limits_{i=1}^{若至少存在一个整数，第i为1}count\times 2^{i-1}=count\times k$ k为所有整数求异或; 由count等于以下. 所以$ans=2^{n-1}\times k$
+> 对于任意种组合类问题，需要判断出哪些组合是有用的，找出有用的组合
+> 子序列的异或，异或满足结合律，所以相当于所有组合求异或, 然后求和
+
+- 分析：求异或，考虑每一位对答案的贡献，考虑第i位的贡献，要使第i位为1，只需要前n-1个任意取，留一个1根据前面的结果确定取不取, 使得结果为1，即可。此时有$2^{n-1}$ 种情况
+    - 而已知的或结果，即可知第i位是否至少有一个1
 $$
-count=2^count_A\times \sum\limits_{i=0}C_{count_B}^{2i+1}=2^{count_A+count_B-1}=2^{r-l-1}
+ans = 2^{n-1} \times \sum\limits_{i=0,第i位存在}^{} 2^i = 2^{n-1}sum 
 $$
 
 [1562C](https://codeforces.com/contest/1562/problem/C)
 ----
-- 要使得两个乘数关系：如果有0 去掉0即可（判断0在左边还是右边），如果没0全1则移动一个单位即可
+- 要使得两个为倍数关系：如果有0 去掉0即可（判断0在左边还是右边），如果没0, 说明全1，此时让他们为1倍即可
 
 [牛客挑战赛58B](https://ac.nowcoder.com/acm/contest/11198/B)
 ----
-> 对于位运算、首先应该想到按位来求对结果的共享
+> 对于位运算、首先应该想到按位来求对结果的贡献
+> 对于a \le b 暴力求解的办法是遍历每个位大小关系
+> 对于n个数的异或运算，要使结果为m，只需要确定最后一个数
 - 考虑每个一位对结果的影响（要想$a\leq b$那肯定是某一位大于它，所以枚举每一位的情况，总共m位）
     - 等式左边第i位为1(($2^{n}-1$),等式右边第i位为0($2^{n-1}$)，
-    - 两边中下标在[1,i-1]随便填($(2^2n)^{i-1}$) 
+    - 两边中下标在[1,i-1]随便填($(2^{2n})^{i-1}$) 
     - 两边中下标在[i+1,m]要求两边一样,而要使两边一样, 左边可以随便填，右边最后一个唯一保证一致($(2^n)^{m-i}\times ((2^{n-1})^{m-i})$,  相乘有$(2^{2n-1})^{m-i}$
-        - 注意还有全部相等的情况: 根据上诉分析，无论左边怎么选，右边都有$(2^n-1)^m$种情况等于左边，而左边有$2^n^m$种情况, 相乘得$(2^{2n-1})^m$
+        - 注意还有全部相等的情况: 根据上诉分析，无论左边怎么选，右边都有$(2^{n-1})^m$种情况等于左边，而左边有$2^n^m$种情况, 相乘得$(2^{2n-1})^m$
     - 所以总共有:
 $$
 (2^{2n-1})^m + \sum\limits_{1}^{m} (2^{2n-1})^{m-i} (2^2n)^{i-1} (2^{n}-1) 2^{n-1}
@@ -158,3 +161,32 @@ $$
 - 总共有$\frac{(n-1)n}{2}$ 场比赛，
     - 当n为奇数的时候每个队伍刚好可以获得$\frac{n-1}{2}$场比赛的胜利， 所以需要构造每个队伍刚好获胜$k = \frac{n-1}{2}$,可以构造一个圈，每个队伍将会赢得前面k个队伍，剩余的队伍都输了
     - 当n为偶数, 因为得分$\frac{3n(n-1)}{2n}$不可能是整数，所以需要构建平局~通常可以考虑变化为前面一种解决方案的状况~ , 使得分数恰好能被整数, 即$\frac{3n(n-1)}{2n} - t = 0 mod n$ ，求的$t=\frac{n}{2}$, 所以构造$\frac{n}{2}$场平局，还是构造一个圈每个元素与圈的对立面达成平手，其余胜负各一半
+
+
+[1487C](https://codeforces.com/problemset/problem/1487/C)
+----
+> 逆序对应该两两对答案的贡献
+- 考虑两两变化后的逆序对对答案的影响: 变化前有 x ... y ... y ... x (或则x ... y ...x)此时(x,y) 的逆序对有2个，变化后要么相对位置不变，要么变成，y ... x ... x ... y 此时(x,y)的逆序对还是两个, 也就是说对称部分不管怎么转换两两间的逆序对还是不变(可以证明如果改动非对称部分逆序对一定会变多），所以要求最大字典序，只需要在对称位置降序排列即可
+
+[1567C](https://codeforces.com/problemset/problem/1657/C)
+----
+> 如果只有两种字符，那么判断最短回文前缀回很方便
+
+首先想到分别进行两种普通的括号匹配和回文判定
+- 但回文串的判定比较麻烦，需要先用马拉车预处理才能达到O(n)
+可以注意到这只有两种字符, 肯定有取巧的地方
+- 考虑第一个字符是'(' 的情况，那么无论下一个是什么，都能删除, 
+- 当第一个是')'时，找下一个')'，因为中间全是'(' 所以只要能找到就肯定是回文串
+
+[1567C](https://codeforces.com/problemset/problem/1657/C)
+----
+> 注意以后写构造题，即使有想法，但是想法很复杂没必要写，参考答案好些
+> 从题目给的线索$3n\times m$肯定与算法有关，而目标是每个坐标都为0，有$n\times m $个目标，考虑是否意味着3次操作可以使一个目标完成
+
+- 根据题目要求，一个位置翻转奇数次得到相反的值，偶数次得到相同的值，通过这个规律可以通过3个此翻转一个位置改变其余不变
+
+[1658](https://codeforces.com/contest/1658/problem/B)
+----
+- 很容易发现奇数位放偶数，偶数位放奇数肯定满足要求，此时gcd=2. 
+- 进一步考虑gcd>2 的情况，加入gcd=k>2, 那么n个数里面最多有$2\floor{\frac{n}{k}}$个数的最大公约数为k，而$2\floor{\frac{n}{k}} < n$ 所以k>2 时不可能有n个的最大公约数为k
+    - 同时可以证明k==2，n&1==1，时也不可能有n个数最大公约数为k
