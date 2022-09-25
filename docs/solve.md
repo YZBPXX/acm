@@ -238,7 +238,7 @@ $$
     - 此时考虑偶数res 如何分配的问题；此时我们想让它尽快收敛，贪心的想只能1、2、1、2 .... , 也就是以3为周期此时$cnt2 = 2(res/3)+res%3$
 
 
-[1419D2)(https://codeforces.com/contest/1419/problem/D2)
+[1419D2](https://codeforces.com/contest/1419/problem/D2)
 ----
 - 答案的范围是0-n， 思考给定一个k如何判断是否符合条件, 
 - 提取的k个数必然是最小的k个数(~证明~)
@@ -278,3 +278,59 @@ $$
 [2389](https://leetcode.cn/problems/longest-subsequence-with-limited-sum/)
 ----
 - 求子序列只有相对位置，求和与位置无关所以可以将其排序
+
+## [164](https://leetcode.cn/problems/maximum-gap/)
+- 将区间划分成n-1个(不管怎么划分最大的元素都在第n个区间), 此时有n-1个区间，n-1个数字（最大的数不再），将数字放入所属区间，有一下三种情况
+    1. 刚好放满，此时每个区间都有且仅有一个，这个时候所有间隔都是相邻区间内元素的间隔，所以最大间隔也是相邻区间元素间隔
+    2. 没放满，存在空区间，那么同一个区间内的元素不可能构成最小间隔（左右两端有最值封住）
+- 所以不管怎么样，最大间隔都在相邻区间求的（除去空区间后相邻）; 其实只要区间个数大于n-1就行了
+- 注意代码实现还有些问题，虽然最大值放在第n区间但是求除法的时候除非整除 否则在n-1区间, 可以选择加个1e-9进行调整
+[6169](https://leetcode.cn/problems/longest-nice-subarray/)
+- 注意这种回溯算法代码怎么写
+```
+int longestNiceSubarray(vector<int>& nums) {
+        int n=nums.size();
+        int or_=nums[0];
+        int ans=1;
+        int pre=0,next=1;
+
+        while(next<n){
+
+            if((or_&nums[next])==0){
+
+                or_|=nums[next];
+                ans=max(ans,next-pre+1);
+                next++;
+            }
+            else{
+                while((or_&nums[next])!=0){
+                    or_^=nums[pre];
+                    pre++;
+                }
+                or_|=nums[next];
+                next++;
+            }
+
+        }
+        return ans;
+    }
+```
+## [6168](https://leetcode.cn/problems/number-of-ways-to-reach-a-position-after-exactly-k-steps/)
+- 明显可以想出：当前位置的值 = 前一个位置少一步的值 + 后一个位置少一步的值 - 当时想着第一轮遍历位置，但是又觉得后一个位置需要前一个位置提供信息才可行，所以就卡住了；仔细一想，后一个位置需要的是前一个位置上一轮的信息
+- 其实根据方程: dp[stride][pos]=dp[stride-1][pos-1]+dp[stride-1][pos+1]
+                dp[pos][stride]=dp[pos-1][stride-1]+dp[pos+1][stride-1]
+- 可以看出，只有stride才能迭代出来, 迭代一轮pos所有情况都会遍历
+
+## [lc2406](https://leetcode.cn/problems/divide-intervals-into-minimum-number-of-groups/)
+- 左区间加一，右区间减一。前缀和统计，维护最大值
+- 注意加减分开统计，否则出现(1,1)这种情况，不能正确统计
+
+## [lc2407](https://leetcode.cn/problems/longest-increasing-subsequence-ii/)
+首先考虑最朴素的做法
+- $dp[i][j]=max{dp[i-1][j-z]},z=1,2,3,...,k$
+- 滚动数组优化掉第一纬，此时$dp[j]=max{dp[j-z]),z=1,2,3,...k$
+- 此时转化为一个区间查询问题，查询n次，每次需要logk,也就是O(nlogn)
+
+## [lc2412](https://leetcode.cn/problems/minimum-money-required-before-transactions/)
+- 对于每一笔交易来说，最差的情况就是前面都是亏钱，然后就轮到这笔交易。而总的最差情况就是这些最差情况中的一个。
+    - 因此可以保存每比交易亏钱总和，然后遍历每次交易，比较出最大损失

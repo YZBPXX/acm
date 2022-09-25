@@ -97,7 +97,7 @@ $$
 - 问最少多少次使得n个数字相等
 - 例子1,2,4; 可以选择第一个加1，第二个加2，然后什么都不做，在加二
 
-[1419D2)(https://codeforces.com/contest/1419/problem/D2)
+[1419D2](https://codeforces.com/contest/1419/problem/D2)
 ----
 - 有一个数组$a_i$, 如果$a_{i-1}\le ai \le a_{i+1}$, 则提取a[i]，
     - 重新排序使得提取的数最多
@@ -139,8 +139,28 @@ output
 - 问如果要使b成递增序列，$\sum\limits_{i=1}^{n}$abs(ki) 最少为多少
 
 [2392](https://leetcode.cn/problems/build-a-matrix-with-conditions/)
----
+----
 - 已知两个有序序列里面都是1-k的整数，分别是1-k从上到下，从左到有的顺序，将这k个数字插入到$k\times k$的矩阵中，使得他们从上到下，从左到右顺序一致，
 
-[2389](https://leetcode.cn/problems/longest-subsequence-with-limited-sum/)
+## [2389](https://leetcode.cn/problems/longest-subsequence-with-limited-sum/)
 - 求一个序列中的子序列和不超过k的最长长度，
+
+## [164](https://leetcode.cn/problems/maximum-gap/)
+- 求一个序列中在坐标轴的最大间隔, 要求O(n)
+## [6169](https://leetcode.cn/problems/longest-nice-subarray/)
+- 求数组中最长连续与的子数组长度
+## [6168](https://leetcode.cn/problems/number-of-ways-to-reach-a-position-after-exactly-k-steps/)
+- 从a到b每次可以向前或者向后移动1步，给你k步问有多少种方法到达
+## [lc2406](https://leetcode.cn/problems/divide-intervals-into-minimum-number-of-groups/)
+- 给你n个区间求区间最大重叠个数
+## [lc2407](https://leetcode.cn/problems/longest-increasing-subsequence-ii/)
+- 求最长递增子序列，最大间隔不超过k
+## [lc2412](https://leetcode.cn/problems/minimum-money-required-before-transactions/)
+- 有n件商品，每件商品花销和返利为[cost,back]，cost表示第i个商品花销，back表示反利；问任意顺序选择n减商品，花销最大是多少
+```
+输入：transactions = [[2,1],[5,0],[4,2]]
+输出：10
+解释：
+刚开始 money = 10 ，交易可以以任意顺序进行。
+可以证明如果 money < 10 ，那么某些交易无法进行。
+```
