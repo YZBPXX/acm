@@ -1,4 +1,4 @@
-- [构造题](./README.md)
+- [习题](./README.md)
 - [RMQ](./RMQ.md)
 - [graph](./graphTheory.md)
 - [string](./string.md)
