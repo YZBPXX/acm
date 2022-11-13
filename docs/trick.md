@@ -68,6 +68,38 @@ FLOAT_MAX
      TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  };
 ```
+- 以链表保存的二叉树层次遍历的代码：
+```c++
+            
+int last=root->val;
+queue<TreeNode*> que;
+que.push(root);
+int ans=0;
+vector<vector<int>>layers;//全部的layer，如果数据量大就直接在layer里操作了
+while(que.size()>0){
+    vector<int>layer; //layer 保存每一层的key
+    int layer_last=0;
+    while(1){
+        TreeNode * now=que.front();
+        que.pop();
+        if(now->left!=nullptr){
+            layer_last=(now->left)->val;
+            layer.push_back((now->left)->val);
+            que.push(now->left);
+        }
+        if(now->right!=nullptr){
+            layer_last=(now->right)->val;
+            layer.push_back((now->right)->val);
+            que.push(now->right);
+        }
+        //temp.push((now->right).val);
+        if(now->val==last)break;
+        
+    }
+    last=layer_last;
+    layers.push_back(layer);
+}
+```
 # stl
 
 priority\_queue

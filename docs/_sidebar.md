@@ -1,4 +1,4 @@
-- [习题](./prolem.md)
+- [习题](./problem.md)
 - [题解](./solve.md)
 - [图论](./graphTheory.md)
 - [数论](./numberTheory.md)
